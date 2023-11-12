@@ -1,5 +1,5 @@
 {
-    "use strict";
+"use strict";
 
 
 // HTML references
@@ -14,7 +14,7 @@ const messageContentInput = document.getElementById("message-content");
 let userName = '';
 
 // Functions
-const login = e => {
+const login = (e) => {
     e.preventDefault();
 
     if (!userNameInput.value) {
@@ -30,15 +30,13 @@ const addMessage = (author, content) => {
     const message = document.createElement('li');
     message.classList.add('message');
     message.classList.add('message--received');
-
     if (author === userName) message.classList.add('message--self');
-
-    message.innerHTML = '
-        <h3 class="message__author">${userName === author ? 'You' : author }</h3>
-        <div class="message__content">
-            ${content}
-        </div>'
-    
+    message.innerHTML = `
+    <h3 class="message__author">${userName === author ? 'You' : author }</h3>
+    <div class="message__content">
+      ${content}
+    </div>
+    `;
     messagesList.appendChild(message);
 };
 
@@ -53,7 +51,7 @@ const sendMessage = e => {
 ;}
 
 // Event listeners
-loginForm.addEventListener('submit', login());
-addMessageForm.addEventListener('submit', sendMessage());
+loginForm.addEventListener('submit', login);
+addMessageForm.addEventListener('submit', sendMessage);
 
 }
