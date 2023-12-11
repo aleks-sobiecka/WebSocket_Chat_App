@@ -1,6 +1,11 @@
 {
 "use strict";
 
+//init socket(client)
+const socket = io();
+//add eventListener on events
+socket.on('message', ({ author, content }) => addMessage(author, content));
+socket.on('logout', (author) => addMessage('chat bot', author + ' has left the conversation... :('));
 
 // HTML references
 const loginForm = document.getElementById("welcome-form");
@@ -21,6 +26,9 @@ const login = (e) => {
         alert('Please enter a username');
     } else {
         userName = userNameInput.value;
+        // add emmitter to emit action to server
+        socket.emit('join', userName);
+        socket.emit('message', { author: 'chat bot', content: userName + ' has joined the conversation!' })
         loginForm.classList.remove('show');
         messagesSection.classList.add('show');
     }
@@ -43,10 +51,15 @@ const addMessage = (author, content) => {
 const sendMessage = e => {
     e.preventDefault();
 
-    if (!messageContentInput.value) {
-        alert('Enter a message before sending');
+    let messageContent = messageContentInput.value;
+
+    if (!messageContent.length) {
+        alert('You have to type something!');
     } else {
-        addMessage(userName, messageContentInput.value);
+        addMessage(userName, messageContent);
+        // add emmitter to emit action to server
+        socket.emit('message', { author: userName, content: messageContent })
+        messageContentInput.value = '';
     }
 ;}
 
